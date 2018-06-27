@@ -36,7 +36,7 @@ public class Server {
 				}
 			}
 			String key = connection.getUser().getAccount();
-			rooms.put(key, new Room(key));
+			rooms.put(key, new Room(key, false));
 			rooms.get(key).addConnection(connection);
 		} else {
 			String key = friend.getAccount() + "@" + connection.getUser().getAccount();
@@ -44,7 +44,7 @@ public class Server {
 				rooms.get(key).addConnection(connection);
 			} else {
 				key = connection.getUser().getAccount() + "@" + friend.getAccount();
-				Room room = new Room(key);
+				Room room = new Room(key, true);
 				rooms.put(key, room);
 				rooms.get(key).addConnection(connection);
 			}

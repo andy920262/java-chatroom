@@ -10,14 +10,16 @@ public class Room {
 	private int id;
 	private LinkedList<Connection> connectionList = new LinkedList<Connection>();
 	private ExecutorService threadExecutor = Executors.newCachedThreadPool();
+	private boolean privateRoom;
 	
-	public Room(String key) {
+	public Room(String key, boolean privateRoom) {
 		this.id = key.hashCode();
+		this.privateRoom = privateRoom;
 		log("Start.");
 	}
 	
 	public boolean isWaiting() {
-		return connectionList.size() < 2;
+		return (!privateRoom) && connectionList.size() < 2;
 	}
 	public boolean isEmpty() {
 		return connectionList.size() == 0;
