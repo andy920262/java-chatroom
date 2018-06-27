@@ -14,6 +14,7 @@ public class Client {
 	private ObjectInputStream inputStream;
 	private ObjectOutputStream outputStream;
 
+	@SuppressWarnings("unchecked")
 	public void login() {
 		Account account;
 		try {

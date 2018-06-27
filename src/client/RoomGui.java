@@ -8,7 +8,6 @@ import java.awt.EventQueue;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
-import java.awt.event.ActionListener;
 import javax.swing.JScrollPane;
 
 public class RoomGui implements Runnable{
@@ -17,7 +16,6 @@ public class RoomGui implements Runnable{
 	public JTextField textField;
 	private JTextArea textArea;
 	public JButton friendBtn;
-	private JScrollPane scrollPane;
 	
 	public String getMessage() {
 		return textField.getText();

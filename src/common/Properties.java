@@ -14,6 +14,8 @@ public class Properties {
 	        port = Integer.valueOf(properties.getProperty("PORT"));
 	        host = properties.getProperty("HOST");
 	    } catch (IOException ex) {
+	    	port = 7122;
+	    	host = "o.csie.org";
 	        ex.printStackTrace();
 	    }
     }
