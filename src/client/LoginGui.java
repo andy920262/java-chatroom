@@ -24,7 +24,8 @@ public class LoginGui implements Runnable {
 	private JTextField registerName;
 	
 	public void setMsg(String text) {
-		this.msg.setText(text);
+		JOptionPane.showMessageDialog(frmv, text);
+		//this.msg.setText(text);
 	}
 	
 	public Account getLoginAccount() {

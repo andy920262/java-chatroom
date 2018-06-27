@@ -1,6 +1,5 @@
 package server;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
@@ -58,6 +57,7 @@ public class Room {
 						return;
 					}
 					DataBase.addFriend(connection.getUser(), c.getUser());
+					connection.send("你將 " + c.getUser().getName() + " 登錄為好友了！");
 					c.send(connection.getUser().getName() + " 將你加入好友！");
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -101,13 +101,14 @@ public class Room {
 						broadCast(msg);
 					}
 					log(msg);
-				} catch (EOFException e) {
+				} catch (IOException e) {
 					String msg = connection.getUser().getName() + " 已離開";
+					connectionList.remove(connection);
 					log(msg);
 					broadCast(msg);
-					connectionList.remove(connection);
 					return;
-				} catch (ClassNotFoundException | IOException | NullPointerException e) {
+				} catch (ClassNotFoundException | NullPointerException e) {
+					e.printStackTrace();
 					return;
 				}
 			}

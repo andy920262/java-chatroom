@@ -26,6 +26,9 @@ public class Client {
 		Account account;
 		try {
 			account = loginGui.getLoginAccount();
+			if (account.getAccount().equals("") || account.getPassword().equals("")) {
+				throw new NullPointerException();
+			}
 		} catch (NullPointerException e) {
 			loginGui.setMsg("請填完整資料！");
 			return;
@@ -45,7 +48,7 @@ public class Client {
 			try {
 				Object friendList = inputStream.readObject();
 				if (!(friendList instanceof ArrayList)) {
-					loginGui.setMsg("登入失敗！");
+					loginGui.setMsg("帳號或密碼錯誤！");
 					return;
 				}
 				menuGui = new MenuGui();
@@ -138,12 +141,11 @@ public class Client {
 			/* Register */
 			outputStream.writeObject(account);
 			try {
-				Boolean ret = (Boolean) inputStream.readObject();
-				if (!ret) {
-					loginGui.setMsg("註冊失敗！");
+				Object ret = inputStream.readObject();
+				if (ret instanceof String) {
+					loginGui.setMsg((String) ret);
 					return;
 				}
-				loginGui.setMsg("註冊成功！");
 			} catch (ClassNotFoundException e2) {
 				e2.printStackTrace();
 			}
