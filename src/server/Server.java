@@ -82,8 +82,9 @@ public class Server {
 							Connection connection = new Connection(socket);
 							Account account = (Account) connection.receive();
 							if (account.isReg()) {
-								if (DataBase.findUser(account.getAccount()) == null) {
+								if (DataBase.findUser(account.getAccount()) != null) {
 									connection.send("帳號名稱已被使用！");
+									return;
 								}
 								Boolean ret = DataBase.addUser(account);
 								System.out.println(account.getAccount() + " registor: "  + (ret ? "Success" : "Failed"));
