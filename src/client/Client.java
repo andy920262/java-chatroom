@@ -118,6 +118,9 @@ public class Client {
 		Account account;
 		try {
 			account = loginGui.getRegisterAccount();
+			if (account.getAccount().equals("") || account.getPassword().equals("")) {
+				throw new NullPointerException();
+			}
 		} catch (NullPointerException e) {
 			loginGui.setMsg("請填完整資料！");
 			return;
