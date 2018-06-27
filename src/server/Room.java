@@ -6,6 +6,10 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * @author andy920262
+ * Room object to handle user's message
+ */
 public class Room {
 	private int id;
 	private LinkedList<Connection> connectionList = new LinkedList<Connection>();
@@ -24,6 +28,10 @@ public class Room {
 	public boolean isEmpty() {
 		return connectionList.size() == 0;
 	}
+	/**
+	 * Send message to all user in the room.
+	 * @param message to send
+	 */
 	public void broadCast(String msg) {
 		for (Connection c : connectionList) {
 			try {
@@ -58,6 +66,10 @@ public class Room {
 		}
 	}
 
+	/**
+	 * Add new user to this room
+	 * @param connection
+	 */
 	public void addConnection(Connection connection) {
 		if (connectionList.size() == 0) {
 			try {

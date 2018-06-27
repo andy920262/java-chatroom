@@ -4,7 +4,11 @@ import common.Account;
 import java.sql.*;
 import java.sql.Connection;
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author andy920262
+ * A Class for handling SQLite database for chat room user data
+ */
 public class DataBase {
 	static private Connection c;
 	static {
@@ -17,7 +21,11 @@ public class DataBase {
 			System.exit(0);
 		}
 	}
-
+	/**
+	 * Add new user to database
+	 * @param account
+	 * @return if add user success
+	 */
 	public static boolean addUser(Account account) {
 		String query = "insert into user (account,password,name) values(?,?,?)";
 		PreparedStatement pst = null;
@@ -34,6 +42,11 @@ public class DataBase {
 		}
 		return true;
 	}
+	/**
+	 * Find if a user in database
+	 * @param account
+	 * @return boolean
+	 */
 	public static Account findUser(String account) {
 		String query = "select * from user";
         Statement stat = null;
@@ -51,7 +64,11 @@ public class DataBase {
         }
 		return null;
 	}
-	
+	/**
+	 * Check if the account & password is correct
+	 * @param account
+	 * @return boolean
+	 */
 	public static Account checkUser(Account account) {
 		String query = "select * from user";
         Statement stat = null;
@@ -69,7 +86,11 @@ public class DataBase {
         }
 		return null;
 	}
-
+	/**
+	 * Add friend for user in database
+	 * @param user
+	 * @param friend
+	 */
 	public static void addFriend(Account user, Account friend) {
 		String query = "insert into friend (user1,user2) values(?,?)";
 		PreparedStatement pst = null;
@@ -83,6 +104,12 @@ public class DataBase {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * if user2 is friend of user1
+	 * @param user1
+	 * @param user2
+	 * @return boolean
+	 */
 	public static boolean isFriend(Account user1, Account user2) {
 		String query = "select * from friend";
         Statement stat = null;
@@ -101,6 +128,11 @@ public class DataBase {
         }
         return false;
 	}
+	/**
+	 * Get friend list of user
+	 * @param user
+	 * @return friendList
+	 */
 	public static ArrayList<Account> getFriendList(Account user) {
 		String query = "select * from friend";
 		ArrayList<Account> friendList = new ArrayList<Account>(); 
@@ -120,8 +152,4 @@ public class DataBase {
 		return friendList;
 	}
 
-	static public void main(String[] argv) {
-		ArrayList<Account> a = getFriendList(new Account("777", "777", "777"));
-		a.forEach(e->System.out.println(e));
-	}
 }

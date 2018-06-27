@@ -2,6 +2,10 @@ package common;
 
 import java.io.Serializable;
 
+/**
+ * @author andy920262
+ * The Account object for record user data
+ */
 public class Account implements Serializable{
 	private static final long serialVersionUID = 5336399702240359800L;
 	private String account;

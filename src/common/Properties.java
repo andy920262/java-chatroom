@@ -3,6 +3,10 @@ package common;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+/**
+ * @author andy920262
+ * Properties
+ */
 public class Properties {
 	public static java.util.Properties properties = new java.util.Properties();
     public static String configFile = "config.properties";

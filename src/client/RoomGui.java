@@ -3,7 +3,6 @@ package client;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -27,14 +26,6 @@ public class RoomGui implements Runnable{
 	
 	public void setMessage(String msg) {
 		textArea.append(msg + "\n");
-	}
-	
-	
-	/**
-	 * Launch the application.
-	 */
-	public void launch() {
-		EventQueue.invokeLater(this);
 	}
 	
 	public void run() {

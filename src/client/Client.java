@@ -6,6 +6,11 @@ import java.util.ArrayList;
 
 import common.*;
 
+
+/**
+ * @author andy920262
+ * The ChatRoom Client
+ */
 public class Client {
 	private LoginGui loginGui;
 	private RoomGui roomGui;
@@ -13,7 +18,9 @@ public class Client {
 	private Socket socket;
 	private ObjectInputStream inputStream;
 	private ObjectOutputStream outputStream;
-
+	/**
+	 * Login event.
+	 */
 	@SuppressWarnings("unchecked")
 	public void login() {
 		Account account;
@@ -54,7 +61,9 @@ public class Client {
 		menuGui.chatBtn.addActionListener(l -> chat());
 		menuGui.run();
 	}
-
+	/**
+	 * Start chatting event.
+	 */
 	private void chat() {	
 		try {
 			Account friend = menuGui.getFriend();
@@ -101,7 +110,9 @@ public class Client {
 		})).start();
 
 	}
-
+	/**
+	 * Register new account event.
+	 */
 	public void register() {
 		Socket regSocket;
 		Account account;
@@ -138,14 +149,12 @@ public class Client {
 		}
 
 	}
-	
 	public void run() {
 		loginGui = new LoginGui();
 		loginGui.loginBtn.addActionListener(l -> login());
 		loginGui.registerBtn.addActionListener(l -> register());
 		loginGui.run();
 	}
-
 	public static void main(String[] args) {
 		Client client = new Client();
 		client.run();

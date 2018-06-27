@@ -33,6 +33,10 @@ public class MenuGui {
 	public MenuGui() {
 		initialize();
 	}
+	/**
+	 * Update friend list
+	 * @param friendList
+	 */
 	public void updateFriend(ArrayList<Account> friendList) {
 		for (Account u : friendList) {
 			listModel.addElement(u);

@@ -9,11 +9,19 @@ import java.util.concurrent.Executors;
 
 import common.*;
 
+/**
+ * @author andy920262
+ * The ChatRoom Server
+ */
 public class Server {
 
 	private ServerSocket serverSocket;
 	private HashMap<String, Room> rooms = new HashMap<String, Room>(); /* Only one room for test */
 
+	/**
+	 * Find a room for new connection
+	 * @param a unmatched connection
+	 */
 	protected void findAndJoin(Connection connection){	
 		for (String key: rooms.keySet()) {
 			if (rooms.get(key).isEmpty()) {

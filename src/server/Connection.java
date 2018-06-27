@@ -7,8 +7,12 @@ import java.net.Socket;
 
 import common.Account;
 
-
-public class Connection{
+/**
+ * 
+ * @author andy920262
+ * A class for handling user connection in server.
+ */
+public class Connection {
 	private Account user;
 	private ObjectInputStream inputStream;
 	private ObjectOutputStream outputStream;
@@ -24,7 +28,6 @@ public class Connection{
 	public void setUser(Account user) {
 		this.user = user;
 	}
-	
 	
 	public Object receive() throws ClassNotFoundException, IOException {
 		return inputStream.readObject();
