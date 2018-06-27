@@ -1,6 +1,9 @@
 # java-chatroom
-OOP 2018 final project
-A simple java implemention of chatroom. Provie random match & add friend features.
+OOP 2018 final project.
+
+A simple java implemention of chatroom.
+
+provie random matching & add friend features.
 
 ### How to Compile
 ```
