@@ -10,42 +10,91 @@ public class Room {
 	private int id;
 	private LinkedList<Connection> connectionList = new LinkedList<Connection>();
 	private ExecutorService threadExecutor = Executors.newCachedThreadPool();
-
+	
+	public Room(String key) {
+		this.id = key.hashCode();
+		log("Start.");
+	}
+	
+	public boolean isWaiting() {
+		return connectionList.size() < 2;
+	}
+	public boolean isEmpty() {
+		return connectionList.size() == 0;
+	}
 	public void broadCast(String msg) {
-		
 		for (Connection c : connectionList) {
 			try {
-				c.sendMessage(msg);
+				c.send(msg);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	private void log(String msg) {
 		System.out.println("[Room " + id + "] " + msg);
 	}
 	
+	public void addFriend(Connection connection) {
+		if (connectionList.size() == 1) {
+			broadCast("請等待對方連線！");
+		}
+		for (Connection c : connectionList) {
+			if (c != connection) {
+				try {
+					if (DataBase.isFriend(connection.getUser(), c.getUser())) {
+						connection.send("已經是好友了喔！");
+						return;
+					}
+					DataBase.addFriend(connection.getUser(), c.getUser());
+					c.send(connection.getUser().getName() + " 將你加入好友！");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	public void addConnection(Connection connection) {
+		if (connectionList.size() == 0) {
+			try {
+				connection.send("正在進行配對，請稍等！");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			connectionList.forEach(c -> {
+				try {
+					connection.send(c.getUser().getName() + "加入聊天室");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			});
+		}
+
 		connectionList.add(connection);
 		log(connection.getUser().getName() + " join.");
-		broadCast(connection.getUser().getName() + " 來聊天惹");
-		threadExecutor.execute(new Runnable() {
-			public void run() {
-				while (true) {
-					try {
-						String msg = connection.receiveMessage();
+		broadCast(connection.getUser().getName() + " 加入聊天室");
+		threadExecutor.execute(() -> {
+			while (true) {
+				try {
+					String msg = (String) connection.receive();
+					if (msg.equals("@ADDFRIEND")) {
+						addFriend(connection);
+					} else {
 						msg = connection.getUser().getName() + "：" + msg;
-						log(msg);
 						broadCast(msg);
-					} catch (EOFException e) {
-						String msg = connection.getUser().getName() + " 已離開";
-						log(msg);
-						connectionList.remove(connection);
-						return;
-					} catch (ClassNotFoundException | IOException e) {
-						e.printStackTrace();
 					}
+					log(msg);
+				} catch (EOFException e) {
+					String msg = connection.getUser().getName() + " 已離開";
+					log(msg);
+					broadCast(msg);
+					connectionList.remove(connection);
+					return;
+				} catch (ClassNotFoundException | IOException | NullPointerException e) {
+					return;
 				}
 			}
 		});

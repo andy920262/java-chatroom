@@ -1,75 +1,40 @@
 package client;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
-import javax.swing.JLabel;
-import java.awt.FlowLayout;
-import javax.swing.JTextField;
-
-import common.User;
-
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
+import java.awt.*;
+import javax.swing.*;
 
 
-class JNumberTextField extends JTextField {
-    private static final long serialVersionUID = 1L;
+import common.Account;
 
-    @Override
-    public void processKeyEvent(KeyEvent ev) {
-        if (Character.isDigit(ev.getKeyChar()) || ev.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-            super.processKeyEvent(ev);
-        }
-        ev.consume();
-        return;
-    }
-
-    /**
-     * As the user is not even able to enter a dot ("."), only integers (whole numbers) may be entered.
-     */
-    public Integer getNumber() {
-        Integer result = null;
-        String text = getText();
-        if (text != null && !"".equals(text)) {
-        	
-            result = Integer.valueOf(text);
-        }
-        return result;
-    }
-}
+import java.awt.event.*;
 
 public class LoginGui implements Runnable {
 
 	private JFrame frmv;
-	private JTextField nameText;
-	private JButton loginBtn;
-	@SuppressWarnings("rawtypes")
-	private JComboBox regionText;
-	@SuppressWarnings("rawtypes")
-	private JComboBox genderText;
-	private JNumberTextField ageText;
+	public JButton loginBtn;
+	public JButton registerBtn;
 	private JLabel msg;
+	private JTabbedPane tab;
+	
+	private JTextField loginAccount;
+	private JPasswordField loginPassword;
 
+	private JTextField registerAccount;
+	private JPasswordField registerPassword;
+	private JTextField registerName;
+	
 	public void setMsg(String text) {
 		this.msg.setText(text);
 	}
 	
-	public User getUser() {
-		return new User(nameText.getText(), ageText.getNumber(), (String) genderText.getSelectedItem(), (String) regionText.getSelectedItem());
+	public Account getLoginAccount() {
+		return new Account(loginAccount.getText(), new String(loginPassword.getPassword()));
 	}
-	
+	public Account getRegisterAccount() {
+		return new Account(registerAccount.getText(), new String(registerPassword.getPassword()), registerName.getText());
+	}	
 	public void close() {
 		frmv.setVisible(false);
-	}
-	
-	public void launch() {
-		EventQueue.invokeLater(this);
 	}
 	
 	public void run() {
@@ -93,58 +58,82 @@ public class LoginGui implements Runnable {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initialize() {
 		frmv = new JFrame();
 		frmv.setTitle("聊天室 V0.87");
-		frmv.setBounds(100, 100, 313, 215);
+		frmv.setBounds(0, 0, 300, 300);
 		frmv.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmv.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		loginBtn = new JButton("登入");
+		tab = new JTabbedPane();
+		frmv.getContentPane().add(tab);
+		
 
-		frmv.getContentPane().add(loginBtn, BorderLayout.SOUTH);
+		JPanel loginPanel = new JPanel();	
+		loginPanel.setLayout(new FlowLayout());
 		
-		JPanel panel_1 = new JPanel();
-		frmv.getContentPane().add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(new BorderLayout(0, 0));
+		loginBtn = new JButton("登入");
+		registerBtn = new JButton("註冊");
 		
-		JPanel panel_2 = new JPanel();
-		panel_1.add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JPanel accountPanel = new JPanel();
+		accountPanel.setLayout(new FlowLayout());
+		loginAccount = new JTextField();
+		loginAccount.setColumns(10);
+		accountPanel.add(new JLabel("帳號"));
+		accountPanel.add(loginAccount);
+		JPanel passwordPanel = new JPanel();
+		passwordPanel.setLayout(new FlowLayout());
+		loginPassword = new JPasswordField();
+		loginPassword.setColumns(10);
+		passwordPanel.add(new JLabel("密碼"));
+		passwordPanel.add(loginPassword);
+		JPanel inputPanel = new JPanel();
+		inputPanel.setLayout(new GridLayout(2, 1));
+		inputPanel.add(accountPanel);
+		inputPanel.add(passwordPanel);
 		
-		JLabel lblNewLabel_1 = new JLabel("性別");
-		panel_2.add(lblNewLabel_1);
+		loginPanel.add(inputPanel);
+		loginPanel.add(loginBtn);
 		
-		genderText = new JComboBox();
-		panel_2.add(genderText);
-		genderText.setModel(new DefaultComboBoxModel(new String[] {"男", "女"}));
+		tab.addTab("登入", loginPanel);
 		
-		JLabel lblNewLabel_2 = new JLabel("年齡");
-		panel_2.add(lblNewLabel_2);
+		JPanel registerPanel = new JPanel();
 		
-		ageText = new JNumberTextField();
-		panel_2.add(ageText);
-		ageText.setColumns(3);
+		accountPanel = new JPanel();
+		accountPanel.setLayout(new FlowLayout());
+		registerAccount = new JTextField();
+		registerAccount.setColumns(10);
+		accountPanel.add(new JLabel("帳號"));
+		accountPanel.add(registerAccount);
 		
-		JLabel lblNewLabel_3 = new JLabel("地區");
-		panel_2.add(lblNewLabel_3);
+		passwordPanel = new JPanel();
+		passwordPanel.setLayout(new FlowLayout());
+		registerPassword = new JPasswordField();
+		registerPassword.setColumns(10);
+		passwordPanel.add(new JLabel("密碼"));
+		passwordPanel.add(registerPassword);
 		
-		regionText = new JComboBox();
-		panel_2.add(regionText);
-		regionText.setModel(new DefaultComboBoxModel(new String[] {"台北", "台中", "台南"}));
+		JPanel namePanel = new JPanel();
+		namePanel.setLayout(new FlowLayout());
+		registerName = new JTextField();
+		registerName.setColumns(10);
+		namePanel.add(new JLabel("暱稱"));
+		namePanel.add(registerName);
 		
-		JPanel panel_3 = new JPanel();
-		panel_1.add(panel_3, BorderLayout.NORTH);
+		registerPanel.setLayout(new GridLayout(4, 1));
+		registerPanel.add(accountPanel);
+		registerPanel.add(passwordPanel);
+		registerPanel.add(namePanel);
+		registerPanel.add(registerBtn);
 		
-		JLabel lblNewLabel = new JLabel("你的名字");
-		panel_3.add(lblNewLabel);
+		tab.addTab("註冊", registerPanel);
 		
-		nameText = new JTextField();
-		panel_3.add(nameText);
-		nameText.setColumns(8);
+		msg = new JLabel();
+		frmv.getContentPane().add(msg, BorderLayout.SOUTH);
 		
-		msg = new JLabel("");
-		panel_1.add(msg, BorderLayout.SOUTH);
+	}
+	public static void main(String[] argv) {
+		LoginGui g = new LoginGui();
+		g.run();
 	}
 }
