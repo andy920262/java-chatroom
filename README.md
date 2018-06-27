@@ -1,5 +1,6 @@
 # java-chatroom
 OOP 2018 final project
+A simple java implemention of chatroom. Provie random match & add friend features.
 
 ### How to Compile
 ```
@@ -22,3 +23,9 @@ Modifiy  ```config.properties``` to config server address & port
 
 ### JAR File
 The JAR file default connect to ```o.csir.org:7122```
+
+
+### Screenshot
+![](https://i.imgur.com/gg2Vk0o.png)
+![](https://i.imgur.com/1i9v0Sl.png)
+![](https://i.imgur.com/EJnXwGw.png)
