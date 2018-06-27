@@ -54,9 +54,9 @@ public class Server {
 
 	public void run() {
 		try {
-			serverSocket = new ServerSocket(Constants.PORT);
+			serverSocket = new ServerSocket(Properties.getPort());
 			System.out.println("Server Start!");
-			System.out.println("Listening on port " + Constants.PORT);
+			System.out.println("Listening on port " + Properties.getPort());
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(0);

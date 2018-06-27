@@ -24,7 +24,7 @@ public class Client {
 		}
 		try {
 			try {
-				socket = new Socket(Constants.HOST, Constants.PORT);
+				socket = new Socket(Properties.getHost(), Properties.getPort());
 			} catch (ConnectException e) {
 				loginGui.setMsg("連線失敗");
 				return;
@@ -112,7 +112,7 @@ public class Client {
 		}
 		try {
 			try {
-				regSocket = new Socket(Constants.HOST, Constants.PORT);
+				regSocket = new Socket(Properties.getHost(), Properties.getPort());
 			} catch (ConnectException e) {
 				loginGui.setMsg("無法連接伺服器");
 				return;
