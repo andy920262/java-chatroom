@@ -11,7 +11,7 @@ import javax.swing.JScrollPane;
 
 public class RoomGui implements Runnable{
 
-	private JFrame frame;
+	JFrame frame;
 	public JTextField textField;
 	private JTextArea textArea;
 	public JButton friendBtn;
@@ -27,7 +27,9 @@ public class RoomGui implements Runnable{
 	public void setMessage(String msg) {
 		textArea.append(msg + "\n");
 	}
-	
+	public void close() {
+		frame.setVisible(false);
+	}
 	public void run() {
 		try {
 			this.frame.setVisible(true);
@@ -51,7 +53,7 @@ public class RoomGui implements Runnable{
 		frame = new JFrame();
 		frame.setTitle("聊天室滑起來");
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.SOUTH);

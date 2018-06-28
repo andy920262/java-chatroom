@@ -3,6 +3,7 @@ package client;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.awt.event.*;
 
 import common.*;
 
@@ -80,7 +81,13 @@ public class Client {
 		menuGui.close();
 		roomGui = new RoomGui();
 		roomGui.run();
-
+		roomGui.frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				login();
+				roomGui.close();
+			}
+		});
 		/* Send Message Event */
 		roomGui.textField.addActionListener(l -> {
 			try {
