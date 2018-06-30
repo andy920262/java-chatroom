@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import java.sql.ClientInfoStatus;
 import java.util.ArrayList;
 
 import model.Client;
@@ -89,24 +88,25 @@ public class RoomActivity extends AppCompatActivity {
             public void run() {
                 while (true) {
                     try {
-                        String ori_msg = (String) Client.inputStream.readObject();
-                        Log.d("[Received]", ori_msg);
-                        String processed_str = ori_msg;
-                        int type = MESSAGE_SYSTEM;
-                        int pos = ori_msg.indexOf("：");
-                        if (pos != -1) {
-                            Log.d("Received", "non-system message.");
-                            if (ori_msg.substring(0, pos).equals(Client.chatwith)) {
-                                type = MESSAGE_RECEIVED;
-                                processed_str = ori_msg.substring(pos + 1);
-                            }
-
-                            else {
+                        Object packet = Client.inputStream.readObject();
+                        Log.d("[Received]", "obj");
+                        int type = 0;
+                        String message = "";
+                        if (packet instanceof common.Message) {
+                            common.Message msg = (common.Message) packet;
+                            if (msg.getAccount().equals(Client.username)) {
                                 type = MESSAGE_SENT;
-                                processed_str = ori_msg.substring(pos + 1);
+                                message = msg.getMsg();
+                            } else {
+                                Client.chatwith = msg.getName();
+                                type = MESSAGE_RECEIVED;
+                                message = msg.getMsg();
                             }
+                        } else if (packet instanceof String) {
+                            type = MESSAGE_SYSTEM;
+                            message = (String) packet;
                         }
-                        handler.sendMessage(handler.obtainMessage(type, processed_str));
+                        handler.sendMessage(handler.obtainMessage(type, message));
                     } catch (Exception e) {
                         if (e.getMessage().equals("Socket closed"))
                             break;
@@ -126,6 +126,7 @@ public class RoomActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Client.inputStream.close();
                     Client.outputStream.close();
                 } catch (Exception e) {
                     e.printStackTrace();
