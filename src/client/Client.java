@@ -84,6 +84,14 @@ public class Client {
 		roomGui.frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				try {
+					outputStream.close();
+					inputStream.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 				login();
 				roomGui.close();
 			}
@@ -114,7 +122,7 @@ public class Client {
 					String msg = (String) inputStream.readObject();
 					roomGui.setMessage(msg);
 				} catch (ClassNotFoundException | IOException e) {
-					e.printStackTrace();
+					return;
 				}
 			}
 		})).start();
