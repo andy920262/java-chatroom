@@ -119,8 +119,13 @@ public class Client {
 		(new Thread(() -> {
 			while (true) {
 				try {
-					String msg = (String) inputStream.readObject();
-					roomGui.setMessage(msg);
+					Object packet = inputStream.readObject();
+					if (packet instanceof Message) {
+						Message msg = (Message) packet;
+						roomGui.setMessage(msg.getName() + "：" + msg.getMsg());
+					} else if (packet instanceof String) {
+						roomGui.setMessage("系統：" + (String) packet);
+					}
 				} catch (ClassNotFoundException | IOException e) {
 					return;
 				}

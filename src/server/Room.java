@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import common.Message;
+
 /**
  * @author andy920262
  * Room object to handle user's message
@@ -31,7 +33,7 @@ public class Room {
 	 * Send message to all user in the room.
 	 * @param message to send
 	 */
-	public void broadCast(String msg) {
+	public void broadCast(Object msg) {
 		for (Connection c : connectionList) {
 			try {
 				c.send(msg);
@@ -97,8 +99,7 @@ public class Room {
 					if (msg.equals("@ADDFRIEND")) {
 						addFriend(connection);
 					} else {
-						msg = connection.getUser().getName() + "：" + msg;
-						broadCast(msg);
+						broadCast(new Message(connection.getUser(), msg));
 					}
 					log(msg);
 				} catch (IOException e) {
